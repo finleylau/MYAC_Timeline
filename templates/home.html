@@ -1,0 +1,16 @@
+﻿{% extends "layout.html" %}
+
+{% block content %}
+    <header class="masthead">
+      <div class="header-content">
+        <div class="header-content-inner">
+          <h1 id="homeHeading">Celebrate Midwest Young Artists Conservatory's 25th Anniversary!</h1>
+          <hr>
+          <p>We have compiled a list of important events, faculty members, and board members from each of our past years.  Click on the button below and select a year to explore our history.  Thanks to everyone that has been a part of the MYAC family!</p>
+          <p>If you want to add something to the timeline, get in contact with us by clicking <a href="{{url_for('contribute')}}">here</a>!</p>
+            <a class="btn btn-primary btn-xl js-scroll-trigger" href="{{url_for('timeline')}}">Explore MYAC's History</a>
+        </div>
+      </div>
+    </header>
+
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<section id="timeline">
+    <button onclick="topFunction()" id="topbutton">Back to Top</button>
+    <div class="row">
+        <div class="col-sm-9 col-sm-push-3 tl-info-container">
+            <div id="timeline-information">
+                <div class="row" id="year-title"></div>
+                <div class="row">
+                    <div class="col-sm-12" id="year-events"></div>
+                </div>
+                <div class="row" id="year-people">
+                    <div class="col-sm-4" id="board"></div>
+                    <div class="col-sm-4" id="artistic"></div>
+                    <div class="col-sm-4" id="admin"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 col-sm-pull-9">
+            <div class="nav-container">
+                <ul id="timeline-navbar"></ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
