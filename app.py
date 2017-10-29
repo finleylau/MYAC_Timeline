@@ -101,7 +101,7 @@ def contribute():
                         msg.attach(filename = filename, content_type = contenttype, data = fp.read())
                     os.remove(filename)
 
-            if form.image.data != None:
+            if form.media.data != None:
                 media_name = form.media.data.filename
                 if '.' in media_name and media_name.rsplit('.', 1)[1] in MEDIA_FILE_TYPES:
                     filename = secure_filename(media_name)
