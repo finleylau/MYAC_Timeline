@@ -490,13 +490,11 @@ header.masthead {
 
 /* Contact form */
 #contribute {
-    background-image: url("../img/mya_10th_anniversary.jpg");
-    background-position: center;
-    height: 100%;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
+    background-color: #1a1a1a;
+    background: -webkit-linear-gradient(#808080, #1a1a1a); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#808080, #1a1a1a); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#808080, #1a1a1a); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#808080, #1a1a1a);
     color: #d9d9d9;
     text-align: center;
     display: block;
@@ -548,6 +546,7 @@ form input#link {
     border: 1px solid #cccccc;
     padding: 5px;
     font-size: 1.1em;
+    margin-bottom: 5px;
 }
 
 form input#image,
@@ -564,7 +563,7 @@ form textarea#description {
     -moz-border-radius: 3px;
     border-radius: 3px;
     border: 1px solid #cccccc;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     padding: 5px;
     font-size: 1.1em;
 }
