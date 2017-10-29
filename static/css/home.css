@@ -468,3 +468,120 @@ header.masthead {
 #topbutton:hover {
     background-color: #FEC250;
 }
+
+#contributebutton {
+    display: block;
+    margin: 30px auto;
+    width: 50%;
+    border: none;
+    outline: none;
+    background-color: #a6a6a6;
+    color: white;
+    cursor: pointer;
+    padding: 15px;
+    border-radius: 10px;
+    font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
+}
+
+#contributebutton:hover {
+    background-color: #FEC250;
+    text-decoration: none;
+}
+
+/* Contact form */
+#contribute {
+    background-image: url("../img/mya_10th_anniversary.jpg");
+    background-position: center;
+    height: 100%;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    color: #d9d9d9;
+    text-align: center;
+    display: block;
+    font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
+}
+
+.form-holder {
+    background-color: #404040;
+    border-radius: 25px;
+    width: 60%;
+    padding-top: 25px;
+    padding-bottom: 50px;
+    padding-left: 50px;
+    padding-right: 50px;
+    display: block;
+    margin: 15px auto;
+}
+
+#contribute h2 {
+    text-transform: uppercase;
+    color: white;
+    font-weight: bold;
+}
+
+/* Message flashing */
+.flash {
+    color: #FEC250;
+    padding: 10px;
+    font-weight: bold;
+}
+
+form label {
+    font-size: 1.2em;
+    font-weight: bold;
+    display: block;
+    padding: 5px 0;
+}
+
+form input#name,
+form input#email,
+form input#eventname,
+form input#date,
+form input#link {
+    width: 50%;
+    background-color: #cccccc;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    border: 1px solid #cccccc;
+    padding: 5px;
+    font-size: 1.1em;
+}
+
+form input#image,
+form input#media {
+    margin: 15px auto;
+    display: block;
+}
+
+form textarea#description {
+    width: 50%;
+    height: 100px;
+    background-color: #cccccc;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    border: 1px solid #cccccc;
+    margin-bottom: 10px;
+    padding: 5px;
+    font-size: 1.1em;
+}
+
+form input#submit {
+    display: block;
+    margin: 30px auto;
+    border: none;
+    outline: none;
+    background-color: #a6a6a6;
+    color: white;
+    cursor: pointer;
+    padding: 15px;
+    border-radius: 10px;
+    font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
+}
+
+form input#submit:hover {
+    background-color: #FEC250;
+}

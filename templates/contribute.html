@@ -3,42 +3,59 @@
 {% block content %}
 
     <section id="contribute">
-      <form id="contact" action="" method="post">
-        <h3>Contribute Contact Form</h3>
-        <h4>Fill out the form below to let us know of any events you want to add to the timeline!</h4>
-        <fieldset>
-          <input name="name" placeholder="Your name" type="text" tabindex="1" required autofocus>
-        </fieldset>
-        <fieldset>
-          <input name="email" placeholder="Your Email Address" type="email" tabindex="2" required>
-        </fieldset>
-        <fieldset>
-            <input name="eventname" placeholder="Event name" type="text" required />
-        </fieldset>
-        <fieldset>
-            <input name="month" placeholder="mm" type="text" required />
-        </fieldset>
-        <fieldset>
-            <input name="day" placeholder="dd" type="text" required />
-        </fieldset>
-        <fieldset>
-            <input name="year" placeholder="yyyy" type="text" required />
-        </fieldset>
-        <fieldset>
-          <textarea name="description" placeholder="Type event description here...." tabindex="4"></textarea>
-        </fieldset>
-        <fieldset>
-            <input type="file" name="image" class="hidden" />
-            <label class="file-label" for="files">Select an image (optional)</label>
-        </fieldset>
-        <fieldset>
-            <input type="file" name="media" class="hidden" />
-            <label class="file-label" for="files">Select a media file (optional)</label>
-        </fieldset>
-        <fieldset>
-          <button name="submit" type="submit" id="contact-submit" data-submit="...Sending">Submit</button>
-        </fieldset>
-      </form>
+        <h2>Contribute to the timeline!</h2>
+        <div class="form-holder">
+            {% if success %}
+            <div class="flash"><p>Thank you for your message. We'll get back to you shortly.</p></div>
+            <a href="{{url_for("contribute")}}" id="contributebutton">Submit Another Response</a>
+
+            {% else %}
+
+            {% for message in form.name.errors %}
+                <div class="flash">{{ message }}</div>
+            {% endfor %}
+            {% for message in form.email.errors %}
+                <div class="flash">{{ message }}</div>
+            {% endfor %}
+            {% for message in form.eventname.errors %}
+                <div class="flash">{{ message }}</div>
+            {% endfor %}
+            {% for message in form.date.errors %}
+                <div class="flash">{{ message }}</div>
+            {% endfor %}
+
+            <form action="{{ url_for('contribute') }}" method=post enctype="multipart/form-data">
+                {{ form.hidden_tag() }}
+
+                {{ form.name.label }}
+                {{ form.name }}
+
+                {{ form.email.label }}
+                {{ form.email }}
+
+                {{ form.eventname.label }}
+                {{ form.eventname }}
+
+                {{ form.date.label }}
+                {{ form.date }}
+
+                {{ form.description.label }}
+                {{ form.description }}
+
+                {{ form.link.label }}
+                {{ form.link }}
+
+                {{ form.image.label }}
+                {{ form.image }}
+
+                {{ form.media.label }}
+                {{ form.media }}
+
+                {{ form.submit }}
+            </form>
+
+            {% endif %}
+        </div>
     </section>
 
 {% endblock %}
