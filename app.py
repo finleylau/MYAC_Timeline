@@ -94,7 +94,6 @@ def contribute():
                         contenttype = "image/png"
                     elif image_name.rsplit('.',1)[1] == "jpg" or image_name.rsplit('.',1)[1] == "jpeg":
                         contenttype = "image/jpeg"
-
                     filename = secure_filename(image_name)
                     form.image.data.save(filename)
                     with app.open_resource(filename) as fp:
