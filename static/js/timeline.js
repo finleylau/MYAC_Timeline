@@ -9,10 +9,12 @@ $(function () {
 
     var navbarHTML = "";
 
-    $.getJSON(Flask.url_for("events"), function (data) {
+    $.getJSON(Flask.url_for("year_info"), function (data) {
         if (data != null) {
             $.each(data, function (key, value) {
                 // update navbar HTML
+                console.log(key)
+                console.log(value.year_info.start_year)
                 navbarHTML = "<li><a href='" + Flask.url_for("error") + "' onclick='renderYear(" + key + "); return false; '>" +
                     value.year_info.start_year + "-" + value.year_info.end_year + "</a></li>" + navbarHTML;
             });
@@ -60,7 +62,7 @@ function renderYear(year_id) {
     var artistichtml = "<h5>Artistic Faculty</h5><hr />";
     var adminhtml = "<h5>Administrative Staff</h5><hr />";
 
-    $.getJSON(Flask.url_for("events"), function (data) {
+    $.getJSON(Flask.url_for("year_info"), function (data) {
         if (data != null) {
             // loop over years for the year with the right key
             $.each(data, function (key, value) {
