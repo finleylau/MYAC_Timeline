@@ -1,0 +1,102 @@
+{% extends 'admin/master.html' %}
+{% block body %}
+{{ super() }}
+
+<div class="container">
+	<div class="row">
+		<div class="col-lg-12">
+			<h1 style="text-align:center" class="lead">MYAC Timeline Admin Page</h1>
+		</div>
+	</div>
+		{% if current_user.is_authenticated %}
+			<div class="row">
+				<div class="col-lg-4">
+					<h3>Events</h3>
+					<p><b>Creating Events: </b></p>
+					<ol>
+						<li>Click on the "Create" button</li>
+						<li>Fill in the required fields (Event, month, day, start year)</li>
+						<li>Fill in the rest of the optional fields if necessary.  <i>Note that the file uploads for image must be in jpg, jpeg, or png format and the media uploads must be in pdf format.</i></li>
+						<li>Click one of the Save buttons to add the event successfully</li>
+					</ol>
+					<p><b>Editing Events: </b></p>
+					<ol>
+						<li>Click the small pencil button next to the event to be edited.</li>
+						<li>Fill out the forms you want to change.  <i>Note that the year will appear as a number starting from 1 to however many years there are.  This is okay to leave it, but if you want to change the year, just input the new year to put the event in.</i></li>
+						<li>Click the save button to finalize your edits.</li>
+						<li>To change an image or media file, you must first click the small delete checkbox next to the image you want to delete, click the save button, and then go back in and upload the new file.  You <b>cannot</b> do both deleting and uploading at the same time.  However, the image file and the media file can be changed simultaneously.</li>
+					</ol>
+					<p><b>Deleting Events: </b></p>
+					<ol>
+						<li>Click on the trash can button next to the event to be deleted.</li>
+						<li>Confirm that you want to delete the event. </li>
+					</ol>
+				</div>
+				<div class="col-lg-4">
+					<h3>Years</h3>
+					<p><b>Creating Years: </b></p>
+					<ol>
+						<li>Click on the "Create" button.</li>
+						<li>The form blank is just a placeholder - <b>DON'T FILL IT IN OR CHANGE IT!</b></li>
+						<li>Hit Save and a new year will be created.</li>
+						<li>Note that creating a new year will take the people from the last year and copy them to the new year to aid in editing/adding new people</li>
+					</ol>
+					<p><b>Editing Years: </b></p>
+					<ol>
+						<li>Editing years is disabled.</li>
+					</ol>
+					<p><b>Deleting Years: </b></p>
+					<ol>
+						<li>Click on the trash can button next to the year to be deleted.</li>
+						<li>Confirm that you want to delete the year. </li>
+						<li>Note that deleting a year will also delete all people associated with that year.</li>
+					</ol>
+				</div>
+				<div class="col-lg-4">
+					<h3>People</h3>
+					<p><b>Creating People: </b></p>
+					<ol>
+						<li>Click on the "Create" button.</li>
+						<li>Fill in the form.</li>
+						<li>Hit Save and a new person will be created.</li>
+					</ol>
+					<p><b>Editing People: </b></p>
+					<ol>
+						<li>Click the small pencil button next to the person to be edited.</li>
+						<li>Fill out the forms you want to change.  <i>Note that the year will appear as a number starting from 1 to however many years there are.  This is okay to leave it, but if you want to change the year, just input the new year to put the event in.</i></li>
+						<li>Click the save button to finalize your edits.</li>
+					</ol>
+					<p><b>Deleting People: </b></p>
+					<ol>
+						<li>Click on the trash can button next to the person to be deleted.</li>
+						<li>Confirm that you want to delete the person. </li>
+					</ol>
+					<p><b>Searching for People: </b></p>
+					<ol>
+						<li>Search people by name by entering the name you want to search for.</li>
+						<li>Search people by year by entering the year you want to search subtracted by 1992.  For example, to search for people from 2015, type "23" (2015-1992) into the search box.</li>
+					</ol>
+				</div>
+			</div>
+		{% else %}
+			<form method="POST" action="">
+				{{ form.hidden_tag() if form.hidden_tag }}
+				{% for f in form if f.type != 'CSRFTokenField' %}
+					<div>
+						{{ f.label }}
+						{{ f }}
+						{% if f.errors %}
+							<ul>
+								{% for e in f.errors %}
+									<li>{{ e }}</li>
+								{% endfor %}
+							</ul>
+						{% endif %}
+					</div>
+				{% endfor %}
+				<button class="btn" type="submit">Submit</button>
+			</form>
+		{% endif %}
+</div>
+
+{% endblock body %}

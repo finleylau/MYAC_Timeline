@@ -1,37 +1,36 @@
-from flask_wtf import Form
+from flask_wtf import FlaskForm
 from wtforms import validators, ValidationError
-from wtforms.fields import TextField, SelectField, TextAreaField, IntegerField, SubmitField, DateField
+from wtforms.fields import TextField, SelectField, TextAreaField, IntegerField, SubmitField, DateField, PasswordField
 from flask_wtf.file import FileField
+from database import Users
+from werkzeug.security import check_password_hash
 
-class ContactForm(Form):
-  name = TextField("Your Name", [validators.InputRequired("Please enter your name!")])
-  email = TextField("Email", [validators.InputRequired("Please enter your email!"), validators.Email("Please enter a valid email!")])
-  eventname = TextField("Event Name", [validators.InputRequired("Please enter the event name!")])
-  date = TextField("Date",[validators.InputRequired("Please enter the event date!")])
-  description = TextAreaField("Event Description")
-  image = FileField("Event image - .jpg, .png")
-  media = FileField("Event media - .pdf")
-  link = TextField("Video link")
-  submit = SubmitField("Submit")
+class ContactForm(FlaskForm):
+	name = TextField("Your Name", [validators.InputRequired("Please enter your name!")])
+	email = TextField("Email", [validators.InputRequired("Please enter your email!"), validators.Email("Please enter a valid email!")])
+	eventname = TextField("Event Name", [validators.InputRequired("Please enter the event name!")])
+	date = TextField("Date",[validators.InputRequired("Please enter the event date!")])
+	description = TextAreaField("Event Description")
+	image = FileField("Event image - .jpg, .png")
+	media = FileField("Event media - .pdf")
+	link = TextField("Video link")
+	submit = SubmitField("Submit")
 
+class LoginForm(FlaskForm):
+	login = TextField(validators=[validators.required()])
+	password = PasswordField(validators=[validators.required()])
 
-class AddYearForm(Form):
-	start = IntegerField("Year's Start Year*", [validators.InputRequired("Please enter a year!")])
-	submit = SubmitField("Add Year")
+	def validate_login(self, field):
+		user = self.get_user()
 
-class AddPeopleForm(Form):
-	name = TextField("Person Name*", [validators.InputRequired("Please input a person's name!")])
-	person_year = IntegerField("Year*", [validators.InputRequired("Please enter what year this person was a part of the organization!")])
-	person_type = SelectField(u'Person Type', choices = [("board", "Board of Directors"), ("artistic", "Artistic Faculty"), ("admin", "Administrative Staff")])
-	submit = SubmitField("Add Person")
+		if user is None:
+			raise validators.ValidationError('Invalid user')
 
-class AddEventsForm(Form):
-	event_name = TextField("Event Name*", [validators.InputRequired("Please enter an event name")])
-	month = IntegerField("Month (number)*", [validators.InputRequired("Please enter a month (number)")])
-	day = IntegerField("Day (number)*", [validators.InputRequired("Please enter a day (number)")])
-	event_year = IntegerField("Year*", [validators.InputRequired("Please enter a valid year")])
-	event_description = TextField("Description")
-	event_link = TextField("Link")
-	event_image = FileField("Event image - .jpg, .png")
-	event_media = FileField("Event media - .pdf")
-	submit = SubmitField("Add Event")
+		# we're comparing the plaintext pw with the the hash from the db
+		if not check_password_hash(user.password, self.password.data):
+		# to compare plain text passwords use
+		# if user.password != self.password.data:
+			raise validators.ValidationError('Invalid password')
+
+	def get_user(self):
+		return Users.query.filter_by(login=self.login.data).first()

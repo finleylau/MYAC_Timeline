@@ -1,9 +1,13 @@
+from flask_admin import AdminIndexView, expose, helpers
 from flask_admin.contrib.sqla import ModelView
 from flask_admin.form.upload import FileUploadField
 from wtforms.validators import InputRequired
 from wtforms.fields import SelectField
+from flask_login import current_user, login_user, logout_user
 import os
-from database import Years, People
+from database import Years, People, Users
+from forms import LoginForm
+from flask import request, redirect, url_for
 
 
 """
@@ -27,14 +31,47 @@ def convert_typeid(view, context, model, name):
 		return("Artistic")
 	elif type_id == 3:
 		return("Admin")
-	else:
-		print("Error in converting type_id")
 
+
+class CustomAdminIndexView(AdminIndexView):
+	@expose('/')
+	def index(self):
+		if not current_user.is_authenticated:
+			return redirect(url_for('.login_view'))
+		return super(CustomAdminIndexView, self).index()
+
+	@expose('/login/', methods=('GET', 'POST'))
+	def login_view(self):
+		# handle user login
+		form = LoginForm(request.form)
+		if helpers.validate_form_on_submit(form):
+			user = form.get_user()
+			login_user(user)
+
+		if current_user.is_authenticated:
+			return redirect(url_for('.index'))
+		self._template_args['form'] = form
+
+		return super(CustomAdminIndexView, self).index()
+
+	@expose('/logout/')
+	def logout_view(self):
+		logout_user()
+		return redirect(url_for('.index'))
+		
 
 class FileCustomUpload(FileUploadField):
 	allowed_extensions = ["pdf", "jpeg", "jpg", "png"]
 
 class PeopleView(ModelView):
+
+	def is_accessible(self):
+		return current_user.is_authenticated
+
+	def inaccessible_callback(self, name, **kwargs):
+		# redirect to login page if user doesn't have access
+		return redirect(url_for('login', next=request.url))
+
 	column_list = ["name", "type_id", "year_id"]
 	column_searchable_list = ["name", "year_id"]
 	column_labels = dict(
@@ -65,6 +102,10 @@ class PeopleView(ModelView):
 
 
 class YearsView(ModelView):
+
+	def is_accessible(self):
+		return current_user.is_authenticated
+
 	can_edit = False
 	can_delete = True
 	column_list =  ["start_year"]
@@ -111,10 +152,19 @@ class YearsView(ModelView):
 		self.session.commit()
 
 		return True
-		
-		# BUG: PEOPLE AREN'T DISPLAYING BECAUSE OF IMPLEMENTATION OF HELPER FUNCTIONS
 
+	def after_model_delete(self, model):
+
+		year_id = model.year_id
+
+		People.query.filter_by(year_id = year_id).delete()
+		self.session.commit()
+		
 class EventsView(ModelView):
+
+	def is_accessible(self):
+		return current_user.is_authenticated
+
 	column_list = ["name","month","day","year_id","description","link","image","media"]
 	column_searchable_list = ["name"]
 	column_labels = dict(name="Event Name", month="Month (number)", day="Day (number)",

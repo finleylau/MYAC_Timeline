@@ -26,3 +26,8 @@ JSON Object returned by /year-info route:
 		},
 		...
 	}
+
+
+Login info for admin:
+MYACtimelineadmin
+Timelineadmin878

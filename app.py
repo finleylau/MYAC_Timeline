@@ -2,16 +2,18 @@ from flask import Flask, flash, redirect, render_template, request, url_for, jso
 from json import load
 from flask_jsglue import JSGlue
 
-from forms import ContactForm, AddYearForm, AddEventsForm, AddPeopleForm
+from forms import ContactForm
 from flask_mail import Message, Mail
 from werkzeug.utils import secure_filename
 import os
 
+from flask_login import LoginManager
 from flask_admin import Admin
-from admin import EventsView, YearsView, PeopleView
+from flask_admin.base import MenuLink
+from admin import EventsView, YearsView, PeopleView, CustomAdminIndexView
 
 from helpers import get_years, get_events, get_people
-from database import db, Events, People, Years, Types
+from database import db, Events, People, Years, Types, Users
 
 # configure app
 app = Flask(__name__,static_url_path="")
@@ -27,21 +29,27 @@ app.config["MAIL_PASSWORD"] = "myactimeline12345"
 mail = Mail(app)
 
 # database configuration
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://postgres:root@localhost/test-mya1"
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://postgres:root@localhost/MYAC-Timeline"
 db.init_app(app)
 
-# create Flask Admin functionality
-admin = Admin(app, name='MYAC Timeline Admin', template_mode='bootstrap3')
+# Initialize flask-login
+def init_login():
+	login_manager = LoginManager()
+	login_manager.init_app(app)
 
-admin.add_view(YearsView(Years, db.session, endpoint="years"))
-admin.add_view(EventsView(Events, db.session, endpoint="events"))
-admin.add_view(PeopleView(People, db.session, endpoint="people"))
+	# Create user loader function
+	@login_manager.user_loader
+	def load_user(user_id):
+		return db.session.query(Users).get(user_id)
+
+init_login()
 
 # app routes
 @app.route("/")
 @app.route("/home")
 def home():
 	"""Renders the home page."""
+
 	return render_template("home.html")
 
 @app.route("/year_info")
@@ -123,6 +131,16 @@ def contribute():
 def error():
 	"""Renders no js page."""
 	return render_template("nojs.html")
+
+
+# create Flask Admin functionality
+admin = Admin(app, name='MYAC Timeline Admin', template_mode='bootstrap3', index_view=CustomAdminIndexView(name="Home",template="/admin/index.html",url="/admin"))
+
+admin.add_view(YearsView(Years, db.session, endpoint="years"))
+admin.add_view(EventsView(Events, db.session, endpoint="events"))
+admin.add_view(PeopleView(People, db.session, endpoint="people"))
+admin.add_link(MenuLink(name='Back to timeline', url="/"))
+admin.add_link(MenuLink(name='Logout', url="/admin/logout"))
 
 # run the app
 if __name__ == "__main__":

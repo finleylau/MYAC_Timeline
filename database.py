@@ -65,3 +65,33 @@ class Types(db.Model):
 
 	def __repr__(self):
 		return "<Types %r" & self.type_name
+
+# create Users table
+class Users(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	login = db.Column(db.Text)
+	password = db.Column(db.Text)
+
+	def __init__(self, login="", password=""):
+		self.login = login
+		self.password = password
+
+	def __repr__(self):
+		return "<Users %r" % self.login
+
+	# Flask-Login integration
+	def is_authenticated(self):
+		return True
+
+	def is_active(self):
+		return True
+
+	def is_anonymous(self):
+		return False
+
+	def get_id(self):
+		return self.id
+
+	# Required for administrative interface
+	def __unicode__(self):
+		return self.username
