@@ -15,6 +15,8 @@ from admin import EventsView, YearsView, PeopleView, CustomAdminIndexView
 from helpers import get_years, get_events, get_people
 from database import db, Events, People, Years, Types, Users
 
+from flask_heroku import Heroku
+
 # configure app
 app = Flask(__name__,static_url_path="")
 JSGlue(app)
@@ -28,8 +30,12 @@ app.config["MAIL_USERNAME"] = "myactimeline@gmail.com"
 app.config["MAIL_PASSWORD"] = "myactimeline12345"
 mail = Mail(app)
 
+# Heroku configuration
+heroku = Heroku(app)
+
 # database configuration
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://postgres:root@localhost/MYAC-Timeline"
+# app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://postgres:root@localhost/MYAC-Timeline"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db.init_app(app)
 
 # Initialize flask-login
