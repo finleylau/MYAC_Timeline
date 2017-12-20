@@ -2,4 +2,4 @@
 Timeline Flask app to display historical information about Midwest Young Artists Conservatory
 
 
-You can see this app in action by going to [myac-timeline.herokuapp.com](myac-timeline.herokuapp.com)
+You can see this app in action by going to [myac-timeline.herokuapp.com](https://myac-timeline.herokuapp.com)
